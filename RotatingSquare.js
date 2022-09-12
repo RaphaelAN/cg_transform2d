@@ -28,7 +28,7 @@ var positionBig = new Float32Array([ // Coordenada dos vertices
 
 var numPoints = positionSmall.length / 2;
 
-var ANGLE_INCREMENT = 30.0; // Incremento do angulo (velocidade)
+var ANGLE_INCREMENT = 2.0; // Incremento do angulo (velocidade)
 
 var last_time = Date.now();
 
@@ -71,7 +71,27 @@ function draw (ctx, angle, index) {
     ctx.translate(x, y);
     ctx.rotate(-angle * Math.PI / 180);
     ctx.translate(-x, -y)
-
+    var grad;
+    if( index == 0) {
+        grad = ctx.createLinearGradient(203, 150, x, y)
+        grad.addColorStop(0, "blue")
+        grad.addColorStop(1, "red")
+    }
+    if( index == 1) {
+        grad = ctx.createLinearGradient(167, 200, x, y)
+        grad.addColorStop(0, "white")
+        grad.addColorStop(1, "green")
+    }
+    if( index == 2) {
+        grad = ctx.createLinearGradient(210, 270, x, y)
+        grad.addColorStop(0, "red")
+        grad.addColorStop(1, "blue")
+    }
+    if( index == 5) {
+        grad = ctx.createLinearGradient(167, 200, x, y)
+        grad.addColorStop(0, "green")
+        grad.addColorStop(1, "white")
+    }
     ctx.beginPath();
     for (let i = 0; i < numPoints; i++) {
         if (i == 3 || i == 4) continue;
@@ -80,8 +100,36 @@ function draw (ctx, angle, index) {
         else ctx.lineTo(x, y);
     }
     ctx.closePath();
-    ctx.fillStyle = "red";
+    ctx.fillStyle = grad;
     ctx.fill();
+    
+    
+    for (let i = 0; i < numPoints; i++) {
+        ctx.beginPath()
+        let [x, y] = mapToViewport(...getVertexSmall(i).map((x) => x));
+        if(i == 0){
+            ctx.rect(x-3, y-3, 5, 5);
+            ctx.fillStyle = "red";
+            ctx.fill();
+        }
+        if(i == 1){
+            ctx.rect(x-3, y-3, 5, 5);
+            ctx.fillStyle = "green";
+            ctx.fill();
+        }
+        if(i == 2){
+            ctx.rect(x-3, y-3, 5, 5);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+        }
+        if(i == 5){
+            ctx.rect(x-3, y-3, 5, 5);
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
+        ctx.closePath()
+    }
+    
 }
 
 function calculateAngle (angle) {
@@ -121,7 +169,7 @@ function mainEntrance () {
                 currentIndex = 2;
                 break;
             case "w":
-                currentIndex = 3;
+                currentIndex = 5;
                 break;
         }
     });
