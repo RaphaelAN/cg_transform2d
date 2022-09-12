@@ -1,34 +1,27 @@
 "use strict";
 
-var width;  // Largura do canvas
-var height; // Altura do canvas
+var width;
+var height;
 
-//  v1------v0
-//  |       | 
-//  |       |
-//  |       |
-//  v2------v3
-var positionSmall = new Float32Array([ // Coordenada dos vertices
+var squareSmall = new Float32Array([
     // x, z, y
-    // v0-v1-v2-v3
     -0.5, -0.5, 0.5,
     -0.5, 0.5, 0.5,
     -0.5, -0.5, 0.5,
     0.5, -0.5, 0.5,
 ]);
 
-var positionBig = new Float32Array([ // Coordenada dos vertices
+var squareBig = new Float32Array([
     // x, z, y
-    // v0-v1-v2-v3
     -0.55, -0.55, 0.55,
     -0.55, 0.55, 0.55,
     -0.55, -0.55, 0.55,
     0.55, -0.55, 0.55,
 ]);
 
-var numPoints = positionSmall.length / 2;
+var numPoints = squareSmall.length / 2;
 
-var ANGLE_INCREMENT = 2.0; // Incremento do angulo (velocidade)
+var ANGLE_INCREMENT = 2.0;
 
 var last_time = Date.now();
 
@@ -38,12 +31,12 @@ function mapToViewport (x, y, n = 5) {
 
 function getVertexSmall (i) {
     let j = (i % numPoints) * 2;
-    return [positionSmall[j], positionSmall[j + 1]];
+    return [squareSmall[j], squareSmall[j + 1]];
 }
 
 function getVertexBig (i) {
     let j = (i % numPoints) * 2;
-    return [positionBig[j], positionBig[j + 1]];
+    return [squareBig[j], squareBig[j + 1]];
 }
 
 function draw (ctx, angle, index) {
@@ -141,22 +134,17 @@ function calculateAngle (angle) {
 };
 
 function mainEntrance () {
-    // Recupera o elemento <canvas>
     var canvas = document.getElementById('theCanvas');
-
-    // Obtém o contexto de renderização para WebGL
     var ctx = canvas.getContext("2d");
+
     if (!ctx) {
         console.log('Falha ao obter o contexto de renderização para WebGL');
     return;
     }
 
-    // Recupera as medidas do canvas
     width = canvas.width;
     height = canvas.height;
-
-    // Muda a direcao da rotacao
-    var currentIndex = 0; // Indice inicial de rotacao
+    var currentIndex = 0; 
     document.addEventListener("keydown", (e) => {
         switch (e.key) {
             case "r":
@@ -174,8 +162,8 @@ function mainEntrance () {
         }
     });
 
-    // Gera o loop da animacao
-    var currentAngle = 2.0; // Angulo inicial
+
+    var currentAngle = 2.0;
     var runanimation = (() => {
         currentAngle = calculateAngle(currentAngle);
         return () => {
